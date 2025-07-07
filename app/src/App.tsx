@@ -44,7 +44,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <FileContext.Provider value={{ file, setFile }}>
         <Header />
         {!online && (

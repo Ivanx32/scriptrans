@@ -16,6 +16,14 @@ npm run dev
 npm run build
 ```
 
+To serve the app from a subfolder, pass the desired base path to Vite:
+
+```bash
+vite build --base=/your-folder/
+```
+
+The router reads `import.meta.env.BASE_URL`, so navigation works automatically.
+
 The service worker will cache the application shell so that when you go offline the basic UI remains available.
 
 Auto deploy: push → master
