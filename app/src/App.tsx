@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react
 import Upload from './pages/Upload';
 import Progress from './pages/Progress';
 import Editor from './pages/Editor';
-import './App.css';
 import { FileContext } from './FileContext';
 
 function Header() {
@@ -15,16 +14,18 @@ function Header() {
         ? 'Editor'
         : 'Upload';
   return (
-    <header className="bg-gray-800 text-white p-4 flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        <img src="/icons/placeholder.svg" alt="logo" className="h-6 w-6" />
-        <span className="font-bold">{step}</span>
+    <header className="sticky top-0 bg-[color:var(--accent)] text-[color:var(--bg)] p-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <img src="/icons/placeholder.svg" alt="logo" className="h-6 w-6" />
+          <span className="font-bold">{step}</span>
+        </div>
+        <nav className="flex flex-wrap gap-2 justify-center">
+          <Link to="/upload">Upload</Link>
+          <Link to="/progress">Progress</Link>
+          <Link to="/editor">Editor</Link>
+        </nav>
       </div>
-      <nav className="hidden md:block space-x-4">
-        <Link to="/upload">Upload</Link>
-        <Link to="/progress">Progress</Link>
-        <Link to="/editor">Editor</Link>
-      </nav>
     </header>
   );
 }
@@ -48,7 +49,7 @@ export default function App() {
       <FileContext.Provider value={{ file, setFile }}>
         <Header />
         {!online && (
-          <div className="text-yellow-400 text-center p-2">Offline</div>
+          <div className="text-[color:var(--accent)] text-center p-2">Offline</div>
         )}
         <main className="p-4">
           <Routes>

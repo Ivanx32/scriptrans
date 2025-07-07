@@ -26,9 +26,11 @@ export default function Progress() {
   }, [progress, navigate]);
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <progress max="100" value={progress} className="w-full max-w-md" />
-      <p>Transcribing… {progress} %</p>
-    </div>
+    <main className="min-h-screen flex flex-col items-center justify-center">
+      <div className="w-full max-w-screen-sm md:max-w-screen-md px-4 flex flex-col items-center gap-4">
+        <progress max="100" value={progress} className="w-full sm:w-80" />
+        <p className="text-[color:var(--fg)]">Transcribing… {progress} %</p>
+      </div>
+    </main>
   );
 }
