@@ -4,11 +4,20 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: '/scriptrans/',
+  define: {
+    __SW_VERSION__: JSON.stringify(Date.now().toString())
+  },
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       registerType: 'autoUpdate',
-      includeAssets: ['icons/placeholder.svg'],
+      includeAssets: ['icons/placeholder.svg', 'offline.html'],
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}']
+      },
       manifestFilename: 'manifest.json',
       manifest: {
         name: 'Scriptrans',
