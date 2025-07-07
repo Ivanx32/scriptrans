@@ -17,3 +17,7 @@ npm run build
 ```
 
 The service worker will cache the application shell so that when you go offline the basic UI remains available.
+
+Auto deploy: push → master
+
+Manual deploy: Actions → Run workflow
