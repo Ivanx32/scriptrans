@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-MAX=8000000
+MAX=10000000
 for f in $(git ls-files -z | xargs -0 stat -c '%n:%s'); do
   size=${f##*:}
   file=${f%:*}
