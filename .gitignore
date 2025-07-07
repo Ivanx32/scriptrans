@@ -1,0 +1,2 @@
+# Ignore built WASM artifacts
+app/public/wasm/whisper.wasm

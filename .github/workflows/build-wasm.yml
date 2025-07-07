@@ -1,0 +1,26 @@
+name: build-wasm
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: ./app/package-lock.json
+      - name: Bootstrap emsdk
+        run: ./scripts/bootstrap.sh
+      - name: Build wasm
+        run: ./scripts/build-wasm.sh
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm
+          path: public/wasm
