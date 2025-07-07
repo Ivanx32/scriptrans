@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -14,10 +15,11 @@ if [ ! -d whisper.cpp ]; then
   git clone --depth=1 "$WHISPER_REPO"
 fi
 
-mkdir -p whisper.cpp/build
-cd whisper.cpp/build
+cd whisper.cpp
+mkdir -p build-em
+cd build-em
 
-emcmake cmake ../bindings/javascript \
+emcmake cmake .. \
   -DWHISPER_WASM_SINGLE_FILE=ON \
   -DWHISPER_BUILD_TESTS=OFF \
   -DWHISPER_BUILD_EXAMPLES=OFF
@@ -27,7 +29,7 @@ emmake make -j"$(nproc)"
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
 cp ../bindings/javascript/whisper.js "$DEST/"
-cp ../bindings/javascript/libwhisper.worker.js "$DEST/"
+[ -f ../bindings/javascript/libwhisper.worker.js ] && cp ../bindings/javascript/libwhisper.worker.js "$DEST/"
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"
