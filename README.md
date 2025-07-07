@@ -21,3 +21,13 @@ The service worker will cache the application shell so that when you go offline 
 Auto deploy: push → master
 
 Manual deploy: Actions → Run workflow
+
+## PWA: Add to Home Screen
+
+To test the app as a Progressive Web App on iOS:
+
+1. Open `https://ivanx32.github.io/scriptrans` in Safari.
+2. Use **Share → Add to Home Screen**.
+3. Launch the installed app from the Home Screen.
+
+The app should start without a 404 error and all routes will work offline.

@@ -13,7 +13,8 @@ export default defineConfig({
       manifest: {
         name: 'Scriptrans',
         short_name: 'Scriptrans',
-        start_url: '/',
+        start_url: '/scriptrans/',
+        scope: '/scriptrans/',
         display: 'standalone',
         theme_color: '#ffffff',
         icons: [
