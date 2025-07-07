@@ -28,8 +28,8 @@ jobs:
         working-directory: ./app
       - run: npm run build -- --base=/scriptrans/
         working-directory: ./app
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3 # GitHub disables v2 on 30 Jan 2025
         with:
           path: ./app/dist
-      - uses: actions/deploy-pages@v2
+      - uses: actions/deploy-pages@v4
 
