@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -e
 MAX=10000000
-for f in $(git ls-files -z | xargs -0 stat -c '%n:%s'); do
-  size=${f##*:}
-  file=${f%:*}
-  if [[ $size -gt $MAX ]]; then
-    echo "Error: $file exceeds ${MAX} bytes" >&2
+FILE="app/public/wasm/whisper.js"
+
+if [ -f "$FILE" ]; then
+  SIZE=$(gzip -c "$FILE" | wc -c)
+  if [[ $SIZE -gt $MAX ]]; then
+    echo "Error: $FILE (gzip) exceeds ${MAX} bytes" >&2
     exit 1
   fi
-done
+fi

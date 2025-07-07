@@ -5,7 +5,7 @@
 import whisper_factory from './wasm/whisper.js';
 import { loadModel } from '/src/wasm/loader.ts';
 whisper_factory().then(async (mod) => {
-  console.log('Whisper ready');
+  console.log('wasm ready');
   await loadModel(mod, 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-ru.bin');
 });
 </script>
