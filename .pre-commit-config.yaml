@@ -1,0 +1,7 @@
+repos:
+  - repo: local
+    hooks:
+      - id: size-check
+        name: Check binary sizes
+        entry: ./scripts/check_size.sh
+        language: script
