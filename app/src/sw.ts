@@ -50,7 +50,9 @@ registerRoute(
     let response: Response | undefined;
     try {
       response = await networkFirst.handle(options);
-    } catch {}
+    } catch {
+      /* ignore errors */
+    }
     return (response ?? (await caches.match('/offline.html'))) as Response;
   }
 );
