@@ -33,22 +33,24 @@ export default function Editor() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <textarea
-        className="w-full max-w-md h-40 border p-2"
-        defaultValue={text}
-      />
-      <div className="flex gap-2">
-        <button className="bg-gray-200 px-3 py-1 rounded" onClick={copy}>
-          Copy
-        </button>
-        <button className="bg-gray-200 px-3 py-1 rounded" onClick={download}>
-          Download .txt
-        </button>
-        <button className="bg-gray-200 px-3 py-1 rounded" onClick={back}>
-          Back to Upload
-        </button>
+    <main className="min-h-screen flex flex-col items-center justify-center">
+      <div className="w-full max-w-screen-sm md:max-w-screen-md px-4 flex flex-col items-center gap-4">
+        <textarea
+          className="w-full h-40 border p-2 bg-[color:var(--bg)] text-[color:var(--fg)]"
+          defaultValue={text}
+        />
+        <div className="flex gap-2">
+          <button className="bg-[color:var(--accent)] text-[color:var(--bg)] px-3 py-1 rounded" onClick={copy}>
+            Copy
+          </button>
+          <button className="bg-[color:var(--accent)] text-[color:var(--bg)] px-3 py-1 rounded" onClick={download}>
+            Download .txt
+          </button>
+          <button className="bg-[color:var(--accent)] text-[color:var(--bg)] px-3 py-1 rounded" onClick={back}>
+            Back to Upload
+          </button>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
