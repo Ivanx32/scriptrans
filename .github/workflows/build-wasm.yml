@@ -19,6 +19,10 @@ jobs:
         uses: mymindstorm/setup-emsdk@v14
         with:
           version: 3.1.60
+      - name: Install wasm-feature
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y binaryen
       - name: Build wasm
         run: ./scripts/build-wasm.sh
       - name: Post-build checks
