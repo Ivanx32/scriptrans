@@ -17,10 +17,7 @@ fi
 mkdir -p whisper.cpp/build
 cd whisper.cpp/build
 
-emcmake cmake .. \
-  -DWHISPER_WASM=ON \
-  -DWHISPER_WASM_SIMD=ON \
-  -DWHISPER_WASM_THREADS=OFF \
+emcmake cmake ../bindings/javascript \
   -DWHISPER_WASM_SINGLE_FILE=ON \
   -DWHISPER_BUILD_TESTS=OFF \
   -DWHISPER_BUILD_EXAMPLES=OFF
@@ -29,7 +26,8 @@ emmake make -j"$(nproc)"
 
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
-cp whisper.wasm whisper.js "$DEST/"
+cp ../bindings/javascript/whisper.js "$DEST/"
+cp ../bindings/javascript/libwhisper.worker.js "$DEST/"
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"

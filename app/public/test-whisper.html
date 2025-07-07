@@ -2,9 +2,9 @@
 <html lang="en">
 <body>
 <script type="module">
-import Module from './wasm/whisper.js';
+import whisper_factory from './wasm/whisper.js';
 import { loadModel } from '/src/wasm/loader.ts';
-Module().then(async (mod) => {
+whisper_factory().then(async (mod) => {
   console.log('Whisper ready');
   await loadModel(mod, 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-ru.bin');
 });

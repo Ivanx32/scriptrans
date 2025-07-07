@@ -1,3 +1,9 @@
+/// <reference path="../wasm.d.ts" />
+// @ts-ignore -- WASM factory has no TypeScript definitions
+import whisper_factory from '/wasm/whisper.js';
+
+export const wasmReady = whisper_factory();
+
 export async function loadModel(Module: any, url: string) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch model: ${res.status}`);

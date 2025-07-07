@@ -23,8 +23,10 @@ jobs:
         run: ./scripts/build-wasm.sh
       - name: Post-build checks
         run: |
-          wasm-feature detect public/wasm/whisper.wasm | grep -q "simd:true"
+          grep -o 'data:application/wasm;base64,[A-Za-z0-9+/=]*' public/wasm/whisper.js | head -n1 | cut -d, -f2 | base64 -d > /tmp/whisper.wasm
+          wasm-feature detect /tmp/whisper.wasm | grep -q "simd:true"
           test -f public/wasm/whisper.js
+          test -f public/wasm/libwhisper.worker.js
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
