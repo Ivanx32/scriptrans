@@ -19,13 +19,15 @@ jobs:
         uses: mymindstorm/setup-emsdk@v14
         with:
           version: 3.1.60
+      - name: Install Binaryen
+        run: sudo apt-get update -qq && sudo apt-get install -y binaryen
       - name: Build wasm
         run: ./scripts/build-wasm.sh
       - name: Check SIMD flag
         run: |
           grep -o 'data:application/wasm;base64,[A-Za-z0-9+/=]*' public/wasm/whisper.js \
             | head -n1 | cut -d, -f2 | base64 -d > /tmp/whisper.wasm
-          npx --yes @wasm-tools/wasm-feature /tmp/whisper.wasm | grep -q 'simd:true'
+          wasm-opt --detect-features /tmp/whisper.wasm | grep -q '+simd'
       - name: Post-build checks
         run: |
           test -f public/wasm/whisper.js
