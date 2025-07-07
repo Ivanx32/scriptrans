@@ -15,10 +15,16 @@ jobs:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: ./app/package-lock.json
-      - name: Bootstrap emsdk
-        run: ./scripts/bootstrap.sh
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.60
       - name: Build wasm
         run: ./scripts/build-wasm.sh
+      - name: Post-build checks
+        run: |
+          wasm-feature detect public/wasm/whisper.wasm | grep -q "simd:true"
+          test -f public/wasm/whisper.js
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
