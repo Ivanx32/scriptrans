@@ -1,37 +1,32 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eux
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
 WHISPER_REPO="https://github.com/ggerganov/whisper.cpp"
 
-# Ensure Emscripten is active
-if [ -f "$HOME/emsdk/emsdk_env.sh" ]; then
-  # shellcheck disable=SC1090
-  source "$HOME/emsdk/emsdk_env.sh"
-fi
+# Load Emscripten environment
+eval "$(emsdk_env.sh)"
 
-if [ ! -d whisper.cpp ]; then
-  git clone --depth=1 "$WHISPER_REPO"
-fi
-
+git clone --depth 1 "$WHISPER_REPO"
 cd whisper.cpp
-mkdir -p build-em
-cd build-em
 
-emcmake cmake .. \
-  -DWHISPER_WASM_SINGLE_FILE=ON \
-  -DWHISPER_BUILD_TESTS=OFF \
-  -DWHISPER_BUILD_EXAMPLES=OFF
+# Build core static library
+cmake -B build-em -DWHISPER_WASM_SINGLE_FILE=ON \
+                 -DWHISPER_BUILD_TESTS=OFF \
+                 -DWHISPER_BUILD_EXAMPLES=OFF
+cmake --build build-em -j"$(nproc)"
 
-emmake make -j"$(nproc)"
+# Build JavaScript bindings
+cd bindings/javascript
+make clean
+make singlefile
 
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
-cp ../bindings/javascript/whisper.js "$DEST/"
-[ -f ../bindings/javascript/libwhisper.worker.js ] && cp ../bindings/javascript/libwhisper.worker.js "$DEST/"
+cp whisper.js "$DEST/"
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"
 mkdir -p "$LICENSE_DEST"
-cp ../LICENSE "$LICENSE_DEST/LICENSE-whisper-cpp"
+cp ../../LICENSE "$LICENSE_DEST/LICENSE-whisper-cpp"
