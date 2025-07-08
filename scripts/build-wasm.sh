@@ -15,21 +15,35 @@ fi
 git clone --depth 1 "$WHISPER_REPO"
 cd whisper.cpp
 
-# Build WebAssembly bundle
-make wasm -j"$(nproc)" \
-    WHISPER_WASM_SIMD=1 \
-    WHISPER_WASM_SINGLE_FILE=1 \
-    WHISPER_OPENMP=0
+###########################################
+# Configure and build the whisper target  #
+###########################################
 
-# Artifacts are placed in wasm/ by Make. Copy them where Vite expects.
+emcmake cmake -S . -B build-em \
+  -DWHISPER_WASM_SINGLE_FILE=ON \
+  -DWHISPER_BUILD_TESTS=OFF \
+  -DWHISPER_BUILD_EXAMPLES=OFF
+
+cmake --build build-em --target whisper -j"$(nproc)"
+
+###########################################
+#  Copy JS artifacts into the web app     #
+###########################################
+
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
-cp wasm/whisper.js "$DEST/whisper.js"
+cp build-em/bin/whisper.js        "$DEST/"
+cp build-em/bin/whisper.worker.js "$DEST/" || true
+
+# sanity log
+echo "Copied WASM bundle:"
+ls -lh "$DEST"
 
 # Also copy into the app's public folder for local builds
 APP_DEST="$PROJECT_ROOT/app/public/wasm"
 mkdir -p "$APP_DEST"
-cp wasm/whisper.js "$APP_DEST/whisper.js"
+cp build-em/bin/whisper.js        "$APP_DEST/whisper.js"
+cp build-em/bin/whisper.worker.js "$APP_DEST/" || true
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"
