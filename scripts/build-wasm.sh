@@ -26,7 +26,7 @@ emcmake cmake -S . -B build-em \
   -DWHISPER_BUILD_TESTS=OFF \
   -DWHISPER_BUILD_EXAMPLES=OFF
 
-cmake --build build-em --target whisper -j"$(nproc)"
+cmake --build build-em --target libwhisper -j"$(nproc)"
 
 ###########################################
 #  Copy JS artifacts into the web app     #
@@ -34,8 +34,11 @@ cmake --build build-em --target whisper -j"$(nproc)"
 
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
-cp build-em/bin/whisper*.js   "$DEST"/
-cp build-em/bin/whisper*.wasm "$DEST"/ 2>/dev/null || true
+cp build-em/bin/libwhisper.js "$DEST/whisper.js"
+if [ -f build-em/bin/libwhisper.worker.js ]; then
+  cp build-em/bin/libwhisper.worker.js "$DEST/whisper.worker.js"
+fi
+cp build-em/bin/libwhisper.wasm "$DEST/whisper.wasm" 2>/dev/null || true
 
 # sanity log
 echo "Copied WASM bundle:"
@@ -44,8 +47,11 @@ ls -lh "$DEST"
 # Also copy into the app's public folder for local builds
 APP_DEST="$PROJECT_ROOT/app/public/wasm"
 mkdir -p "$APP_DEST"
-cp build-em/bin/whisper*.js   "$APP_DEST"/
-cp build-em/bin/whisper*.wasm "$APP_DEST"/ 2>/dev/null || true
+cp build-em/bin/libwhisper.js "$APP_DEST/whisper.js"
+if [ -f build-em/bin/libwhisper.worker.js ]; then
+  cp build-em/bin/libwhisper.worker.js "$APP_DEST/whisper.worker.js"
+fi
+cp build-em/bin/libwhisper.wasm "$APP_DEST/whisper.wasm" 2>/dev/null || true
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"
