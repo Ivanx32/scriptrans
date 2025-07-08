@@ -20,7 +20,9 @@ cd whisper.cpp
 ###########################################
 
 emcmake cmake -S . -B build-em \
+  -DWHISPER_BUILD_EM=ON \
   -DWHISPER_WASM_SINGLE_FILE=ON \
+  -DWHISPER_WASM_SIMD=ON \
   -DWHISPER_BUILD_TESTS=OFF \
   -DWHISPER_BUILD_EXAMPLES=OFF
 
@@ -32,8 +34,8 @@ cmake --build build-em --target whisper -j"$(nproc)"
 
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
-cp build-em/bin/whisper.js        "$DEST/"
-cp build-em/bin/whisper.worker.js "$DEST/" || true
+cp build-em/bin/whisper*.js   "$DEST"/
+cp build-em/bin/whisper*.wasm "$DEST"/ 2>/dev/null || true
 
 # sanity log
 echo "Copied WASM bundle:"
@@ -42,8 +44,8 @@ ls -lh "$DEST"
 # Also copy into the app's public folder for local builds
 APP_DEST="$PROJECT_ROOT/app/public/wasm"
 mkdir -p "$APP_DEST"
-cp build-em/bin/whisper.js        "$APP_DEST/whisper.js"
-cp build-em/bin/whisper.worker.js "$APP_DEST/" || true
+cp build-em/bin/whisper*.js   "$APP_DEST"/
+cp build-em/bin/whisper*.wasm "$APP_DEST"/ 2>/dev/null || true
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"
