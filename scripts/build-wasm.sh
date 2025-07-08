@@ -22,18 +22,24 @@ emcmake cmake -B build-em \
                  .
 cmake --build build-em -j"$(nproc)"
 
-# Build JavaScript bindings
-cd bindings/javascript
-make singlefile
+###############################################
+# Build JavaScript / WASM bindings
+###############################################
 
+# Build the libwhisper target which produces whisper.js and the worker
+cmake --build build-em --target libwhisper -j"$(nproc)"
+
+# Artifacts are placed in build-em/bin/ by CMake. Copy them where Vite expects.
 DEST="${GITHUB_WORKSPACE:-$PROJECT_ROOT}/public/wasm"
 mkdir -p "$DEST"
-cp whisper.js "$DEST/"
+cp build-em/bin/libwhisper.js "$DEST/whisper.js"
+cp build-em/bin/libwhisper.worker.js "$DEST/"
 
 # Also copy into the app's public folder for local builds
 APP_DEST="$PROJECT_ROOT/app/public/wasm"
 mkdir -p "$APP_DEST"
-cp whisper.js "$APP_DEST/"
+cp build-em/bin/libwhisper.js "$APP_DEST/whisper.js"
+cp build-em/bin/libwhisper.worker.js "$APP_DEST/"
 
 # Copy license
 LICENSE_DEST="$PROJECT_ROOT/third_party"
