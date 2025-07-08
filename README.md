@@ -39,3 +39,20 @@ To test the app as a Progressive Web App on iOS:
 3. Launch the installed app from the Home Screen.
 
 The app should start without a 404 error and all routes will work offline.
+
+## Build & Run locally
+
+To rebuild the Whisper WASM bundle you need Emscripten. After cloning the repo run:
+
+```bash
+./scripts/bootstrap.sh       # one-time setup
+./scripts/build-wasm.sh
+```
+
+The generated `whisper.js` will be placed in `app/public/wasm/`. You can then start the dev server:
+
+```bash
+cd app
+npm install
+npm run dev
+```
