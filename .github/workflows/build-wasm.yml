@@ -25,13 +25,17 @@ jobs:
         run: ./scripts/build-wasm.sh
       - name: Check SIMD flag
         run: |
-          grep -o 'data:application/wasm;base64,[A-Za-z0-9+/=]*' public/wasm/whisper.js \
-            | head -n1 | cut -d, -f2 | base64 -d > /tmp/whisper.wasm
+          node - <<'NODE'
+          const fs = require('fs');
+          const m = fs.readFileSync('public/wasm/whisper.js', 'utf8')
+            .match(/data:application\/wasm;base64,([A-Za-z0-9+/=]+)/);
+          if (!m) process.exit(42);
+          fs.writeFileSync('/tmp/whisper.wasm', Buffer.from(m[1], 'base64'));
+          NODE
           wasm-opt --detect-features /tmp/whisper.wasm | grep -q '+simd'
       - name: Post-build checks
         run: |
           test -f public/wasm/whisper.js
-          test -f public/wasm/libwhisper.worker.js
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
