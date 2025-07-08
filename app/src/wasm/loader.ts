@@ -1,8 +1,14 @@
 import '../wasm.d.ts';
-// @ts-expect-error -- WASM factory has no TypeScript definitions
-import whisper_factory from '/wasm/whisper.js';
 
-export const wasmReady = whisper_factory();
+export const wasmReady = (async () => {
+  const url = (typeof crossOriginIsolated !== 'undefined' && !crossOriginIsolated)
+    ? '/wasm/whisper.single.js'
+    : '/wasm/whisper.js';
+  const factory = (await import(/* @vite-ignore */ url)).default as () => Promise<Record<string, unknown>>;
+  const mod = await factory();
+  console.log('wasm ready');
+  return mod;
+})();
 
 export async function loadModel(
   Module: { FS_writeFile(path: string, data: Uint8Array): void },
