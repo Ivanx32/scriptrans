@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 MAX=10000000
-FILE="app/public/wasm/whisper.js"
+FILE="app/public/wasm/whisper-web.js"
 
 if [ -f "$FILE" ]; then
   SIZE=$(gzip -c "$FILE" | wc -c)

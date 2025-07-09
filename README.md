@@ -49,8 +49,7 @@ To rebuild the Whisper WASM bundle you need Emscripten. After cloning the repo r
 ./scripts/build-wasm.sh
 ```
 
-The generated `whisper.js` (and `whisper.wasm` when not using the single-file mode)
-will be placed in `app/public/wasm/` as well as `public/wasm/`. You can then start the dev server:
+The generated `whisper-web.js` and `whisper-web.wasm` will be placed in `app/public/wasm/` as well as `public/wasm/`. You can then start the dev server:
 
 ```bash
 cd app
