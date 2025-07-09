@@ -2,7 +2,7 @@
 <html lang="en">
 <body>
 <script type="module">
-import whisper_factory from './wasm/whisper.js';
+import whisper_factory from './wasm/whisper-web.js';
 import { loadModel } from '/src/wasm/loader.ts';
 whisper_factory().then(async (mod) => {
   console.log('wasm ready');

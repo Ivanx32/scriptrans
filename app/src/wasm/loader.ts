@@ -2,8 +2,8 @@ import '../wasm.d.ts';
 
 export const wasmReady = (async () => {
   const url = (typeof crossOriginIsolated !== 'undefined' && !crossOriginIsolated)
-    ? '/wasm/whisper.single.js'
-    : '/wasm/whisper.js';
+    ? '/wasm/whisper-web.single.js'
+    : '/wasm/whisper-web.js';
   const factory = (await import(/* @vite-ignore */ url)).default as () => Promise<Record<string, unknown>>;
   const mod = await factory();
   console.log('wasm ready');

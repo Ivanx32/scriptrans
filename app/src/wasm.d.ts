@@ -1,19 +1,19 @@
-declare module '/wasm/whisper.js' {
+declare module '/wasm/whisper-web.js' {
   const factory: () => Promise<Record<string, unknown>>;
   export default factory;
 }
 
-declare module '/wasm/whisper.single.js' {
+declare module '/wasm/whisper-web.single.js' {
   const factory: () => Promise<Record<string, unknown>>;
   export default factory;
 }
 
-declare module 'public/wasm/whisper.js' {
+declare module 'public/wasm/whisper-web.js' {
   const factory: () => Promise<Record<string, unknown>>;
   export default factory;
 }
 
-declare module 'public/wasm/whisper.single.js' {
+declare module 'public/wasm/whisper-web.single.js' {
   const factory: () => Promise<Record<string, unknown>>;
   export default factory;
 }
