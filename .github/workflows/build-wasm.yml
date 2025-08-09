@@ -18,20 +18,15 @@ jobs:
       - name: Build whisper WASM
         run: ./scripts/build-wasm.sh
 
-      - name: Cache node_modules / pnpm
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
+          cache: npm
+          cache-dependency-path: app/package-lock.json
 
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: npm ci
+        working-directory: app
       - name: Check SIMD flag
         run: |
           node - <<'NODE'
