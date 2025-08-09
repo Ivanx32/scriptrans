@@ -29,14 +29,18 @@ jobs:
         working-directory: app
       - name: Check SIMD flag
         run: |
-          node - <<'NODE'
-          const fs = require('fs');
-          const m = fs.readFileSync('public/wasm/whisper-web.js', 'utf8')
-            .match(/data:application\/wasm;base64,([A-Za-z0-9+/=]+)/);
-          if (!m) process.exit(42);
-          fs.writeFileSync('/tmp/whisper.wasm', Buffer.from(m[1], 'base64'));
-          NODE
-          wasm-opt --detect-features /tmp/whisper.wasm | grep -q '+simd'
+          if [ -f public/wasm/whisper-web.wasm ]; then
+            wasm-opt --detect-features public/wasm/whisper-web.wasm | grep -q '+simd'
+          else
+            node - <<'NODE'
+            const fs = require('fs');
+            const m = fs.readFileSync('public/wasm/whisper-web.js', 'utf8')
+              .match(/data:application\/wasm;base64,([A-Za-z0-9+/=]+)/);
+            if (!m) process.exit(42);
+            fs.writeFileSync('/tmp/whisper.wasm', Buffer.from(m[1], 'base64'));
+            NODE
+            wasm-opt --detect-features /tmp/whisper.wasm | grep -q '+simd'
+          fi
       - name: Post-build checks
         run: |
           test -f public/wasm/whisper-web.js
