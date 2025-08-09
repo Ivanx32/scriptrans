@@ -12,8 +12,12 @@ if command -v emsdk_env.sh >/dev/null; then
   source "$(command -v emsdk_env.sh)"
 fi
 
+# Always operate from the project root so relative paths are predictable
+cd "$PROJECT_ROOT"
 
-git clone --depth 1 "$WHISPER_REPO"
+# Refresh the whisper.cpp clone to avoid failures on repeated builds
+rm -rf whisper.cpp
+git clone --depth 1 "$WHISPER_REPO" whisper.cpp
 cd whisper.cpp
 
 ###########################################
