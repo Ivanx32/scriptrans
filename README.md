@@ -56,3 +56,29 @@ cd app
 npm install
 npm run dev
 ```
+
+If you skip the build step above, the repository ships small placeholder modules so the app still builds, but Whisper will not run until you generate the real WASM binaries.
+
+## Что еще нужно сделать вручную и как автоматизировать
+
+1. **Собрать реальные WASM‑бандлы Whisper.**
+   - Выполните `./scripts/bootstrap.sh`, чтобы установить Emscripten и вспомогательные зависимости (один раз на машину).
+   - Запустите `./scripts/build-wasm.sh`, чтобы получить `app/public/wasm/whisper-web.js` и `app/public/wasm/whisper-web.single.js`.
+   - Пока эти скрипты не выполнены, приложение собирается с заглушками и не сможет выполнять расшифровку речи.
+
+2. **Проконтролировать наличие артефактов в билде.**
+   - Убедитесь, что собранные `whisper-web*.js` попадают в папку `public/wasm/` (скрипт копирует их автоматически).
+   - Если используете CI, убедитесь, что артефакты сохраняются между шагами (например, через кэш или `actions/upload-artifact`).
+
+### Как избегать ручных шагов
+
+- **Автоматическая сборка в CI/CD.** Добавьте в пайплайн шаги:
+  1. `./scripts/bootstrap.sh` (кэшируйте `~/.emscripten_cache` и `emsdk` для ускорения).
+  2. `./scripts/build-wasm.sh`.
+  3. Обычную сборку приложения (`npm install`, `npm run build`).
+- **Публикация артефактов.**
+  - Для GitHub Actions можно после сборки загрузить содержимое `app/public/wasm/` как артефакт или включать его в итоговый бандл, чтобы деплой получал готовые файлы.
+  - Для GitHub Pages — оставьте файлы в `app/public/wasm/`, Vite положит их в `dist/wasm/` и они попадут в публикацию.
+- **Локальная автоматизация.** Добавьте в `package.json` скрипт вроде `"build:with-wasm": "./scripts/bootstrap.sh && ./scripts/build-wasm.sh && npm run build"`, чтобы запускать одну команду вместо трех.
+
+Если настроить эти шаги в автоматической сборке и деплое, ручное вмешательство больше не понадобится: CI соберет WASM, положит их в артефакты и задеплоит вместе с приложением.
