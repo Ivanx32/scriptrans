@@ -56,3 +56,5 @@ cd app
 npm install
 npm run dev
 ```
+
+If you skip the build step above, the repository ships small placeholder modules so the app still builds, but Whisper will not run until you generate the real WASM binaries.
