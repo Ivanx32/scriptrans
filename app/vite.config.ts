@@ -26,11 +26,18 @@ export default defineConfig({
         scope: '/scriptrans/',
         display: 'standalone',
         theme_color: '#ffffff',
+        background_color: '#ffffff',
         icons: [
           {
-            src: '/icons/placeholder.svg',
+            src: 'icons/placeholder.svg',
             sizes: 'any',
             type: 'image/svg+xml'
+          },
+          {
+            src: 'icons/placeholder.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'maskable'
           }
         ]
       }
