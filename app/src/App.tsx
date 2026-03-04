@@ -7,6 +7,7 @@ import { FileContext } from './FileContext';
 
 function Header() {
   const location = useLocation();
+  const iconPath = `${import.meta.env.BASE_URL}icons/placeholder.svg`;
   const step =
     location.pathname === '/progress'
       ? 'Progress'
@@ -17,7 +18,7 @@ function Header() {
     <header className="sticky top-0 bg-[color:var(--accent)] text-[color:var(--bg)] p-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <img src="/icons/placeholder.svg" alt="logo" className="h-6 w-6" />
+          <img src={iconPath} alt="logo" className="h-6 w-6" />
           <span className="font-bold">{step}</span>
         </div>
         <nav className="flex flex-wrap gap-2 justify-center">

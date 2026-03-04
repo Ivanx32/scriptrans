@@ -11,6 +11,7 @@ declare const self: ServiceWorkerGlobalScope;
 declare const __SW_VERSION__: string;
 
 const CACHE_NAME = `shell-v${__SW_VERSION__}`;
+const OFFLINE_URL = new URL('offline.html', self.registration.scope).pathname;
 setCacheNameDetails({ precache: CACHE_NAME, prefix: '', suffix: '' });
 
 self.addEventListener('install', () => {
@@ -32,11 +33,13 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data === 'SKIP_WAITING' || event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 precacheAndRoute(self.__WB_MANIFEST);
-precacheAndRoute([{ url: '/offline.html', revision: '' }]);
+precacheAndRoute([{ url: OFFLINE_URL, revision: null }]);
 
 registerRoute(
   /\.(?:js|css|html|ico|png|svg)$/, 
@@ -53,7 +56,6 @@ registerRoute(
     } catch {
       /* ignore errors */
     }
-    return (response ?? (await caches.match('/offline.html'))) as Response;
+    return (response ?? (await caches.match(OFFLINE_URL))) as Response;
   }
 );
-
